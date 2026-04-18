@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Aqua Dash</title>
+  <link rel="icon" type="image/png" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+  <meta name="theme-color" content="#0d7aa6" />
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+
+    <div id="hud" class="hud hidden">
+      <span id="score">0</span>
+    </div>
+
+    <div id="menu" class="overlay">
+      <h1>AQUA DASH</h1>
+      <p>Survive the infinite depths</p>
+      <div class="sound-controls">
+        <button id="bubble-btn" class="secondary-btn">Bubble: On</button>
+        <button id="music-btn" class="secondary-btn">Music: On</button>
+        <label id="music-volume-label" for="music-volume" class="slider-label">Music Volume: <span
+            id="music-volume-value">70%</span></label>
+        <input id="music-volume" class="sound-slider" type="range" min="0" max="100" step="1" value="70" />
+      </div>
+      <button id="start-btn">Start Dive</button>
+    </div>
+
+    <button id="pause-btn" class="icon-btn hidden" aria-label="Pause game">II</button>
+
+    <div id="pause-menu" class="overlay hidden">
+      <h2>Paused</h2>
+      <p class="hint">Take a breath.</p>
+      <div class="sound-controls">
+        <button id="pause-bubble-btn" class="secondary-btn">Bubble: On</button>
+        <button id="pause-music-btn" class="secondary-btn">Music: On</button>
+        <label id="pause-music-volume-label" for="pause-music-volume" class="slider-label">Music Volume: <span
+            id="pause-music-volume-value">70%</span></label>
+        <input id="pause-music-volume" class="sound-slider" type="range" min="0" max="100" step="1" value="70" />
+      </div>
+      <button id="resume-btn">Resume</button>
+      <button id="quit-btn" class="secondary-btn">Quit To Menu</button>
+    </div>
+
+    <div id="game-over" class="overlay hidden">
+      <h2>Game Over</h2>
+      <p>Score: <span id="final-score">0</span></p>
+      <button id="restart-btn">Retry Dive</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.log('SW registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>
