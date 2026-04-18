@@ -2,7 +2,7 @@
 
 **Aqua Dash** is a high-performance, mobile-optimized infinite arcade survival game. Dive into the mysterious depths of the ocean, master the buoyancy of your clownfish, and survive the treacherous pipes as you descent into the abyss.
 
-![Aqua Dash Preview](assets/icon-512.png)
+https://gokcegokben.github.io/Aqua-Dash/
 
 ## 🎮 Gameplay Features
 
