@@ -26,7 +26,7 @@ Once installed, the game works **offline** and provides a full-screen, native-li
 - **Offline Support**: Service Worker API for asset caching.
 - **Fonts**: 'Press Start 2P' & 'VT323' from Google Fonts.
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 The game is built using a modular Vanilla JavaScript architecture:
 
