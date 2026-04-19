@@ -13,10 +13,9 @@ backgroundVideo.muted = true;
 backgroundVideo.playsInline = true;
 backgroundVideo.autoplay = true;
 
-
 window.backgroundMusic = new Audio('./assets/music.mp3');
 window.backgroundMusic.loop = true;
-window.backgroundMusic.volume = 0.315;
+window.backgroundMusic.volume = 0.35;
 const backgroundMusic = window.backgroundMusic;
 
 const bubbleSoundPool = Array.from({ length: 6 }, () => {
@@ -41,13 +40,14 @@ async function initAssets() {
 }
 
 function startBackgroundVideo() {
-  backgroundVideo.play().catch(() => {});
+  backgroundVideo.play().catch(() => { });
 }
 
 function startBackgroundMusic() {
   if (musicMuted || musicVolume <= 0) return;
+  // Direct assignment ensure priority
   backgroundMusic.volume = (musicVolume / 100) * 0.45;
-  backgroundMusic.play().catch(() => {});
+  backgroundMusic.play().catch(() => { });
 }
 
 function playBubbleSound() {
@@ -58,7 +58,7 @@ function playBubbleSound() {
 
   audio.currentTime = 0;
   audio.volume = 1;
-  audio.play().catch(() => {});
+  audio.play().catch(() => { });
 }
 
 function setBubbleMuted(nextMuted) {
@@ -125,10 +125,6 @@ window.addEventListener(
       return;
     }
 
-    if (game.state === 'PAUSED') {
-      return;
-    }
-
     if (event.code === 'Tab' || event.code === 'Space') {
       event.preventDefault();
       startBackgroundVideo();
@@ -143,7 +139,8 @@ window.addEventListener(
 window.addEventListener(
   'pointerdown',
   (event) => {
-    if (event.target.closest('button')) {
+    // Ignore interactive elements
+    if (event.target.closest('button, input')) {
       return;
     }
 
@@ -192,7 +189,11 @@ ui.onToggleMusicMute(() => {
 });
 
 ui.onMusicVolumeChange((value) => {
+  // Ensure adjustment works immediately if music is already initialized
   setMusicVolume(value);
+  if (backgroundMusic.paused) {
+    startBackgroundMusic();
+  }
 });
 
 ui.showMenu();
