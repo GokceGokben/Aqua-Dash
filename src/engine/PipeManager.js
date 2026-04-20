@@ -2,12 +2,12 @@ export class PipeManager {
   constructor(canvas) {
     this.canvas = canvas;
     this.pipeWidth = 130;
-    this.gap = 220;
-    this.baseSpeed = 4.2;
-    this.spawnDistance = 300;
+    this.gap = 245;
+    this.baseSpeed = 4.6; // Increased from 4.2
+    this.spawnDistance = 310;
     this.minTopHeight = 90;
     this.clusterModeStartScore = 20;
-    this.clusterTightDistance = 128;
+    this.clusterTightDistance = 145;
 
     this.reset();
   }
@@ -26,8 +26,8 @@ export class PipeManager {
     const maxTop = this.canvas.height - this.gap - this.minTopHeight;
     const safeMax = Math.max(this.minTopHeight + 40, maxTop);
     const PLAYER_HEIGHT = 58; // Player.js'ten alınan değer
-    const maxDelta = Math.floor(this.gap * 0.55); // Borular arası maksimum dikey kayma
-    const minOverlap = Math.floor(PLAYER_HEIGHT * 1.2); // Gap açıklıkları arasında minimum örtüşme
+    const maxDelta = Math.floor(this.gap * 0.45); // Reduced from 0.55 for smoother transitions
+    const minOverlap = Math.floor(PLAYER_HEIGHT * 1.3); // Increased for safer passage
 
     let prevPipe = this.pipes.length > 0 ? this.pipes[this.pipes.length - 1] : null;
     let tryCount = 0;
@@ -97,8 +97,8 @@ export class PipeManager {
       // Güvenli geçiş kontrolü (ani sıçrama ve gap örtüşme)
       if (prev !== null) {
         const PLAYER_HEIGHT = 58;
-        const maxDelta = Math.floor(this.gap * 0.55);
-        const minOverlap = Math.floor(PLAYER_HEIGHT * 1.2);
+        const maxDelta = Math.floor(this.gap * 0.4); // Stricter vertical jump for tight clusters
+        const minOverlap = Math.floor(PLAYER_HEIGHT * 1.5); // Wider overlap for guaranteed passage
         // 1. Ani sıçrama engeli
         if (Math.abs(candidate - prev) > maxDelta) {
           candidate = prev + (candidate > prev ? maxDelta : -maxDelta);
@@ -135,10 +135,14 @@ export class PipeManager {
   }
 
   update(onScore, score = 0) {
-    // Hız artışı: 50. seviyeden sonra her 50'de bir az miktarda hızlanır
+    // Hız artışı: 50-100 arası azar azar, 100'den sonra 50'nin katlarında kademe kademe artar
     let speed = this.baseSpeed;
-    if (score >= 50) {
-      speed += Math.floor((score - 50) / 50 + 1) * 0.5; // Her 50'de bir 0.5 artış
+    if (score >= 50 && score < 100) {
+      speed += (score - 50) * 0.015; // Increased from 0.01
+    } else if (score >= 100) {
+      const baseBoost = 0.75; // Increased from 0.5
+      const stageBoost = Math.floor((score - 100) / 50 + 1) * 0.6; // Increased from 0.5
+      speed += baseBoost + stageBoost;
     }
     this.speed = speed;
 
@@ -160,7 +164,7 @@ export class PipeManager {
         this.spawnPipeWithTop(nextTop);
 
         if (this.clusterQueue.length === 0) {
-          this.clusterRestSpawns = 2 + Math.floor(Math.random() * 2);
+          this.clusterRestSpawns = 7 + Math.floor(Math.random() * 5);
         }
       } else {
         this.spawnPipe();

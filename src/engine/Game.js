@@ -72,10 +72,7 @@ export class Game {
     this.canvas.width = w;
     this.canvas.height = h;
 
-    const mobile = w < 900;
-    this.pipeManager.gap = mobile ? 230 : 220;
-    this.pipeManager.spawnDistance = mobile ? 315 : 290;
-
+    // Reset difficulty overrides to base values defined in PipeManager
     this.player.reset();
     this.pipeManager.reset();
   }
